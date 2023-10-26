@@ -12,11 +12,14 @@ import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
 import java.util.List;
+
+import static org.hibernate.annotations.CascadeType.*;
+
 public class habitacion {
 
     @ApiModelProperty(value = "Habitacion id", example ="1")
     @Id
-    @GeneratedValue(strategy = GenerationType.Identidad)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer numeroHabitacion;
 
     @ApiModelProperty(value = "Tipo de habitacion", example ="basica")
@@ -27,7 +30,7 @@ public class habitacion {
     @Column(name = "Precio")
     private Double Precio;
 
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "Habitacion")
+    @OneToMany(cascade = {PERSIST}, mappedBy = "Habitacion")
     @JsonIgnoreProperties("Habitacion")
     /*
     private List<reservas> reservations;
@@ -62,14 +65,14 @@ public class habitacion {
     public void setPrecio(Double Precio) {
         this.Precio = Precio;
     }
-/*
+
     public List<reservas> getReservations() {
-        return reservas;
+        return Reservas;
     }
 
-    public void setreservas(List<reservas> reservas) {
-        this.reservas = reservas;
+    public void setreservas(List<Reservas> reservas) {
+        this.Reservas = reservas;
     }
 
- */
+ 
 }

@@ -9,6 +9,6 @@ public class ServicioHabitacion {
     private ServicioHabitacion serviciohabitacion;
 
     public ServicioHabitacion(HabitacionRepository HabitacionRepository) {
-        this.serviciohabitacion = HabitacionRepository;
+        this.serviciohabitacion = (ServicioHabitacion) HabitacionRepository;
     }
 }
