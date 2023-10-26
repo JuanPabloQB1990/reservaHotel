@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 @Api(value="---", description = "Esta es la comunicación entre el controlador de la sala y todos los servicios de habitacion asociados.")
 public class HabitacionController {
-   /* @Autowired
+    @Autowired
     private ServicioHabitacion serviciohabitacion;
 }
