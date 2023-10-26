@@ -1,5 +1,6 @@
-package com.reservaHoteles.hoteles;
+package com.reservaHoteles.hoteles.models;
 
+import com.reservaHoteles.hoteles.models.Cliente;
 import jakarta.persistence.*;
 
 @Entity

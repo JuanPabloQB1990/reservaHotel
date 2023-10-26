@@ -1,7 +1,8 @@
-package com.reservaHoteles.hoteles;
+package com.reservaHoteles.hoteles.services;
 
-import com.reservaHoteles.hoteles.excepciones.GlobalExceptionHandler;
 import com.reservaHoteles.hoteles.excepciones.HandlerResponseException;
+import com.reservaHoteles.hoteles.models.Cliente;
+import com.reservaHoteles.hoteles.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -66,8 +67,7 @@ public class ClienteService {
         cliente.get().setApellido(Objects.isNull(clienteAActualizar.getApellido()) ?
             cliente.get().getApellido(): clienteAActualizar.getApellido());
 
-        cliente.get().setEdad(Objects.isNull(clienteAActualizar.getEdad()) ?
-                cliente.get().getEdad(): clienteAActualizar.getEdad());
+        cliente.get().setEdad(clienteAActualizar.getEdad());
 
         cliente.get().setDireccion(Objects.isNull(clienteAActualizar.getDireccion()) ?
                 cliente.get().getDireccion(): clienteAActualizar.getDireccion());

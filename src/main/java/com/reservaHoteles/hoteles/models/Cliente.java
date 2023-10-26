@@ -1,7 +1,5 @@
-package com.reservaHoteles.hoteles;
+package com.reservaHoteles.hoteles.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity

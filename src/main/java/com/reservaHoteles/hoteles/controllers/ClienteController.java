@@ -1,6 +1,8 @@
-package com.reservaHoteles.hoteles;
+package com.reservaHoteles.hoteles.controllers;
 
+import com.reservaHoteles.hoteles.services.ClienteService;
 import com.reservaHoteles.hoteles.excepciones.HandlerResponseException;
+import com.reservaHoteles.hoteles.models.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +15,7 @@ import java.util.Optional;
 @RequestMapping("api/v1")
 public class ClienteController {
 
-    private  ClienteService clienteService;
+    private ClienteService clienteService;
 
     @Autowired
     public ClienteController(ClienteService clienteService){
