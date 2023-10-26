@@ -1,4 +1,4 @@
-package com.reservaHoteles.hoteles.exceptions;
+package com.reservaHoteles.hoteles.excepciones;
 
 public class ReservaFindException extends RuntimeException{
     public ReservaFindException(String message) {

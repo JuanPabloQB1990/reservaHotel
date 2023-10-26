@@ -1,13 +1,12 @@
 package com.reservaHoteles.hoteles.services;
 
-import com.reservaHoteles.hoteles.exceptions.ReservaFindException;
+import com.reservaHoteles.hoteles.excepciones.ReservaFindException;
 import com.reservaHoteles.hoteles.models.ReservaConfirmationList;
 import com.reservaHoteles.hoteles.models.Reservas;
 import com.reservaHoteles.hoteles.repositories.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service

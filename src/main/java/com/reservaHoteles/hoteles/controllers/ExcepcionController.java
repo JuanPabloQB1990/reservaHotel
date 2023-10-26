@@ -1,6 +1,6 @@
 package com.reservaHoteles.hoteles.controllers;
 
-import com.reservaHoteles.hoteles.exceptions.ReservaFindException;
+import com.reservaHoteles.hoteles.excepciones.ReservaFindException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
