@@ -3,6 +3,7 @@ package com.reservaHoteles.hoteles.controllers;
 import com.reservaHoteles.hoteles.services.ClienteService;
 import com.reservaHoteles.hoteles.excepciones.HandlerResponseException;
 import com.reservaHoteles.hoteles.models.Cliente;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping(path = "api/clientes")
 public class ClienteController {
 
     private ClienteService clienteService;
@@ -24,29 +25,29 @@ public class ClienteController {
 
     // ---------------- GET ALL---------------
 
-    @GetMapping("/clientes")
+    @GetMapping
     public List<Cliente> obtenerClientes(){
         return this.clienteService.mostrarClientes();
     }
 
     // ---------------- GET BY ID (CEDULA)---------------
 
-    @GetMapping("/cliente/{cedula}")
-    public Optional<Cliente> obtenerIdCliente(@PathVariable("cedula") Long cedula){
+    @GetMapping("{cedula}")
+    public Cliente obtenerIdCliente(@PathVariable("cedula") Long cedula){
         return this.clienteService.buscarClientePorCedula(cedula);
     }
 
     // ---------------- POST ---------------
 
-    @PostMapping("/clientes")
-    public ResponseEntity<Cliente> registrarCliente(@RequestBody Cliente cliente){
+    @PostMapping
+    public ResponseEntity<Cliente> registrarCliente(@RequestBody @Valid Cliente cliente){
         this.clienteService.registrarCliente(cliente);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     // ---------------- DELETE BY ID (CEDULA)---------------
 
-    @DeleteMapping(value = "/borrar/{cedula}")
+    @DeleteMapping(value = "{cedula}")
     public ResponseEntity<?> borrarCliente(@PathVariable Long cedula) throws HandlerResponseException {
         clienteService.borrarCliente(cedula);
         return ResponseEntity.ok(HttpStatus.OK);
@@ -54,7 +55,7 @@ public class ClienteController {
 
     // ---------------- UPDATE BY ID (CEDULA)---------------
 
-    @PutMapping(value = "/actualizar")
+    @PutMapping
     public ResponseEntity<?> actualizarCliente(@RequestBody Cliente cliente) throws HandlerResponseException {
         clienteService.actualizarCliente(cliente);
         return ResponseEntity.ok(HttpStatus.OK);

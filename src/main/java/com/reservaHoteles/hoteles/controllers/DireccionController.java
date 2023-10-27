@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping(path = "api/direcciones")
 public class DireccionController {
 
     private DireccionService direccionService;
@@ -23,13 +23,13 @@ public class DireccionController {
 
     // ---------------- GET ALL---------------
 
-    @GetMapping("/direcciones")
+    @GetMapping
     public List<Direccion> obtenerDirecciones(){
         return this.direccionService.mostrarDirecciones();
     }
     // ---------------- POST ---------------
 
-    @PostMapping("/direccion")
+    @PostMapping
     public ResponseEntity<Direccion> registrarDireccion(@RequestBody Direccion direccion){
         this.direccionService.crearDireccion(direccion);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -37,7 +37,7 @@ public class DireccionController {
 
     // ---------------- UPDATE BY ID ---------------
 
-    @PutMapping(value = "/actualizar")
+    @PutMapping
     public ResponseEntity<?> actualizarDireccion(@RequestBody Direccion direccion) throws HandlerResponseException {
         direccionService.actualizarDireccion(direccion);
         return ResponseEntity.ok(HttpStatus.OK);

@@ -1,5 +1,6 @@
 package com.reservaHoteles.hoteles.controllers;
 
+import com.reservaHoteles.hoteles.models.Cliente;
 import com.reservaHoteles.hoteles.models.ReservaConfirmationList;
 import com.reservaHoteles.hoteles.models.Reservas;
 import com.reservaHoteles.hoteles.services.ReservaService;
@@ -25,8 +26,8 @@ public class ReservaController {
         return this.reservaService.crearReserva(reserva);
     }
 
-    @GetMapping(path = "clientes/{id}")
-    public List<Reservas> obtenerReservasPorCliente(@PathVariable Integer id){
-        return this.reservaService.obtenerReservasPorCliente(id);
+    @GetMapping(path = "cliente/{cedula}")
+    public Cliente obtenerReservasPorCliente(@PathVariable Long cedula){
+        return this.reservaService.obtenerReservasPorCliente(cedula);
     }
 }

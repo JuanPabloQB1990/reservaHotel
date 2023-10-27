@@ -23,34 +23,30 @@ public class ClienteService {
     // ---------------- CREATE ---------------
     public Cliente registrarCliente(Cliente cliente) throws HandlerResponseException {
 
-        if (cliente.getCedula() != null) {
-            Optional<Cliente> clienteOptional = this.clienteRepository.findById(cliente.getCedula());
-            if (clienteOptional.isPresent()) {
-                throw new HandlerResponseException(HttpStatus.INTERNAL_SERVER_ERROR,"la cedula no está en la base de datos.");
+        Cliente clienteOptional = this.clienteRepository.findByCedula(cliente.getCedula());
+            if (clienteOptional != null) {
+                throw new HandlerResponseException(HttpStatus.INTERNAL_SERVER_ERROR,"el cliente ya esta registrado");
             }
-        }
-        if (cliente.getNombre() != null && cliente.getApellido() != null && cliente.getCedula() != null) {
-            this.clienteRepository.save(cliente);
-            return cliente;
-        } else {
-            throw new HandlerResponseException( HttpStatus.INTERNAL_SERVER_ERROR ,"la cedula,el nombre y apellido son obligatorios");
-        }
+
+        Cliente clienteCreado = this.clienteRepository.save(cliente);
+        return clienteCreado;
+
     }
 
     //---------------- READ ----------------
     public List<Cliente> mostrarClientes() throws HandlerResponseException{
         List<Cliente> listaClientes = (List<Cliente>) clienteRepository.findAll();
         if(listaClientes.isEmpty()){
-            throw new HandlerResponseException(HttpStatus.INTERNAL_SERVER_ERROR,"la base de datos está vacía.");
+            throw new HandlerResponseException(HttpStatus.INTERNAL_SERVER_ERROR,"no hay usuarios registrados.");
         }
         return listaClientes;
     }
     //---------------- READ BY ID (CEDULA) ----------------
-    public Optional<Cliente> buscarClientePorCedula(Long cedula){
-        Optional<Cliente> cliente = clienteRepository.findById(cedula);
-        if(cliente.isEmpty()){
+    public Cliente buscarClientePorCedula(Long cedula){
+        Cliente cliente = clienteRepository.findByCedula(cedula);
+        if(cliente == null){
 
-            throw new HandlerResponseException(HttpStatus.INTERNAL_SERVER_ERROR,"no se encontró el clietne en la base de datos.");
+            throw new HandlerResponseException(HttpStatus.INTERNAL_SERVER_ERROR,"no se encontró el cliente en la base de datos.");
         }
         return cliente;
     }

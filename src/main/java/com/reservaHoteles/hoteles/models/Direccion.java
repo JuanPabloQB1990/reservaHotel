@@ -4,10 +4,10 @@ import com.reservaHoteles.hoteles.models.Cliente;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "direcciones")
+@Table(name = "direccion")
 public class Direccion {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int direccionId;
 
     @Column
@@ -16,10 +16,12 @@ public class Direccion {
     @Column
     private String direccion;
 
-    @ManyToOne()
-    @JoinColumn(name = "cedula", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "cliente_cedula")
     private Cliente cliente;
 
+    public Direccion() {
+    }
 
     public Direccion(int direccionId, String ciudad, String direccion, Cliente cliente) {
         this.direccionId = direccionId;
@@ -30,7 +32,7 @@ public class Direccion {
 
 
     public int getDireccionId() {
-        return direccionId;
+            return direccionId;
     }
 
     public void setDireccionId(int direccionId) {

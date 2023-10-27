@@ -1,81 +1,39 @@
 package com.reservaHoteles.hoteles.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
 @Entity
-@Table(name = "clientes")
+@Table(name = "cliente")
 public class Cliente {
 
     @Id
-    @Column(name = "cedula")
     private Long cedula;
 
-    @Column(name = "nombre")
+    @NotNull(message = "el nombre del cliente es obligatorio")
     private String nombre;
 
-    @Column(name = "apellido")
+    @NotNull(message = "el apellido del cliente es obligatorio")
     private String apellido;
 
-    @Column(name = "direccion")
-    @ManyToOne()
-    @JoinColumn(name = "direccionId", nullable = false)
-    private Direccion direccion;
+    @NotNull(message = "el ciudad es obligatoria")
+    private String ciudad;
 
-    @Column(name = "edad")
+    @NotNull(message = "la direccion del cliente es obligatoria")
+    private String direccion;
+
     private int edad;
 
-    @Column(name = "correoElectronico")
+    @NotNull(message = "el correo del cliente es obligatorio")
     private String correoElectronico;
 
-    public Cliente() {
-    }
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    private List<Reservas> reservas = new ArrayList<>();
 
 
-    public Long getCedula() {
-        return cedula;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public Direccion getDireccion() {
-        return direccion;
-    }
-
-    public int getEdad() {
-        return edad;
-    }
-
-    public String getCorreoElectronico() {
-        return correoElectronico;
-    }
-
-    public void setCedula(Long cedula) {
-        this.cedula = cedula;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public void setDireccion(Direccion direccion) {
-        this.direccion = direccion;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
-    }
 }

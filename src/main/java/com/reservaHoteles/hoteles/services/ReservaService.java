@@ -1,8 +1,10 @@
 package com.reservaHoteles.hoteles.services;
 
 import com.reservaHoteles.hoteles.excepciones.ReservaFindException;
+import com.reservaHoteles.hoteles.models.Cliente;
 import com.reservaHoteles.hoteles.models.ReservaConfirmationList;
 import com.reservaHoteles.hoteles.models.Reservas;
+import com.reservaHoteles.hoteles.repositories.ClienteRepository;
 import com.reservaHoteles.hoteles.repositories.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,30 +15,46 @@ import java.util.List;
 public class ReservaService {
 
     private ReservaRepository reservaRepository;
+    private ClienteRepository clienteRepository;
 
     @Autowired
-    public ReservaService(ReservaRepository reservaRepository) {
+    public ReservaService(ReservaRepository reservaRepository, ClienteRepository clienteRepository) {
         this.reservaRepository = reservaRepository;
+        this.clienteRepository = clienteRepository;
+
     }
 
     public ReservaConfirmationList crearReserva(Reservas reserva) {
+
+        Cliente clienteEncontrado = this.clienteRepository.findByCedula(reserva.getCliente().getCedula());
         String fecha = reserva.getFechaReserva().substring(0,10);
-        Reservas reservaEncontrada = this.reservaRepository.buscarReserva(reserva.getIdHabitacion(),fecha);
+        Reservas reservaEncontrada = this.reservaRepository.buscarReserva(reserva.getHabitacion().getNumero(),fecha);
 
-        if (reservaEncontrada == null){
-            Reservas reservaCreada = this.reservaRepository.save(reserva);
-            return new ReservaConfirmationList(
-                    reservaCreada.getCodReserva(),
-                    reservaCreada.getFechaReserva(),
-                    reservaCreada.getTotalAPagar(),
-                    reservaCreada.getIdHabitacion());
+        if (clienteEncontrado != null){
+            if (reservaEncontrada != null){
+                throw new ReservaFindException("la habitacion ya se encuentra disponible para esta fecha");
+            }
         }
+        this.reservaRepository.crearReserva(
+                reserva.getCodReserva(),
+                reserva.getFechaReserva(),
+                reserva.getCliente().getCedula(),
+                reserva.getTotalAPagar(),
+                reserva.getHabitacion().getNumero());
 
-        throw new ReservaFindException("la habitacion ya se encuentra disponible para esta fecha");
-
+        return new ReservaConfirmationList(
+                reserva.getCodReserva(),
+                reserva.getFechaReserva(),
+                reserva.getTotalAPagar(),
+                reserva.getHabitacion());
     }
 
-    public List<Reservas> obtenerReservasPorCliente(Integer id) {
-        return this.reservaRepository.findByIdCliente(id);
+
+    public Cliente obtenerReservasPorCliente(Long cedula) {
+
+
+        return this.clienteRepository.findByCedula(cedula);
+
+
     }
 }

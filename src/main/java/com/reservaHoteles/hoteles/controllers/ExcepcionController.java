@@ -1,5 +1,6 @@
 package com.reservaHoteles.hoteles.controllers;
 
+import com.reservaHoteles.hoteles.excepciones.HandlerResponseException;
 import com.reservaHoteles.hoteles.excepciones.ReservaFindException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,6 +30,14 @@ public class ExcepcionController {
     public Map<String, String> reservaFindExcepcion(ReservaFindException rfe){
         errorMap = new HashMap<>();
         errorMap.put("errorMessage", rfe.getMessage());
+        return errorMap;
+    }
+
+
+    @ExceptionHandler(HandlerResponseException.class)
+    public Map<String, String> clienteNotFoundExcepcion(HandlerResponseException hre){
+        errorMap = new HashMap<>();
+        errorMap.put("errorMessage", hre.getMessage());
         return errorMap;
     }
 

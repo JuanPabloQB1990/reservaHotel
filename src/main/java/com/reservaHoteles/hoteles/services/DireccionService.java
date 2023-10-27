@@ -3,6 +3,7 @@ package com.reservaHoteles.hoteles.services;
 import com.reservaHoteles.hoteles.excepciones.HandlerResponseException;
 import com.reservaHoteles.hoteles.models.Direccion;
 import com.reservaHoteles.hoteles.repositories.DireccionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,12 @@ import java.util.UUID;
 
 @Service
 public class DireccionService {
-    DireccionRepository direccionRepository;
+    private DireccionRepository direccionRepository;
+
+    @Autowired
+    public DireccionService(DireccionRepository direccionRepository) {
+        this.direccionRepository = direccionRepository;
+    }
 
     // ---------------- CREATE ---------------
     public  Direccion crearDireccion(Direccion direccion) throws HandlerResponseException {
