@@ -30,7 +30,6 @@ public class habitacion {
     @Column(name = "Precio")
     private Double Precio;
 
-    @OneToMany(cascade = {PERSIST}, mappedBy = "Habitacion")
     @JsonIgnoreProperties("Habitacion")
     /*
     private List<reservas> reservations;
@@ -66,6 +65,8 @@ public class habitacion {
         this.Precio = Precio;
     }
 
+
+ /*
     public List<reservas> getReservations() {
         return Reservas;
     }
@@ -74,5 +75,5 @@ public class habitacion {
         this.Reservas = reservas;
     }
 
- 
+ */
 }
