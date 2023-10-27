@@ -13,6 +13,7 @@ import java.util.List;
 public class Cliente {
 
     @Id
+    @NotNull(message = "la cédula es obligatorio")
     private Long cedula;
 
     @NotNull(message = "el nombre del cliente es obligatorio")
@@ -24,16 +25,13 @@ public class Cliente {
     @NotNull(message = "el ciudad es obligatoria")
     private String ciudad;
 
-    @NotNull(message = "la direccion del cliente es obligatoria")
     private String direccion;
 
     private int edad;
 
-    @NotNull(message = "el correo del cliente es obligatorio")
+
     private String correoElectronico;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Reservas> reservas = new ArrayList<>();
-
-
 }

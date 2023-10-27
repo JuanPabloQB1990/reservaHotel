@@ -20,15 +20,18 @@ public class ClienteService {
     public ClienteService(ClienteRepository clienteRepository){
         this.clienteRepository = clienteRepository;
     }
+
     // ---------------- CREATE ---------------
     public Cliente registrarCliente(Cliente cliente) throws HandlerResponseException {
 
         Cliente clienteOptional = this.clienteRepository.findByCedula(cliente.getCedula());
-            if (clienteOptional != null) {
+
+            if (clienteOptional != null ) {
                 throw new HandlerResponseException(HttpStatus.INTERNAL_SERVER_ERROR,"el cliente ya esta registrado");
             }
 
         Cliente clienteCreado = this.clienteRepository.save(cliente);
+
         return clienteCreado;
 
     }

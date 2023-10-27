@@ -28,7 +28,7 @@ public class ReservaService {
 
         Cliente clienteEncontrado = this.clienteRepository.findByCedula(reserva.getCliente().getCedula());
         String fecha = reserva.getFechaReserva().substring(0,10);
-        Reservas reservaEncontrada = this.reservaRepository.buscarReserva(reserva.getHabitacion().getNumero(),fecha);
+        Reservas reservaEncontrada = this.reservaRepository.buscarReserva(reserva.getHabitacion().getNumerohabitacion(),fecha);
 
         if (clienteEncontrado != null){
             if (reservaEncontrada != null){
@@ -40,7 +40,7 @@ public class ReservaService {
                 reserva.getFechaReserva(),
                 reserva.getCliente().getCedula(),
                 reserva.getTotalAPagar(),
-                reserva.getHabitacion().getNumero());
+                reserva.getHabitacion().getNumerohabitacion());
 
         return new ReservaConfirmationList(
                 reserva.getCodReserva(),
@@ -51,10 +51,10 @@ public class ReservaService {
 
 
     public Cliente obtenerReservasPorCliente(Long cedula) {
-
-
         return this.clienteRepository.findByCedula(cedula);
 
 
     }
+
+    // metodo pagar habitación =>
 }

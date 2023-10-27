@@ -14,7 +14,7 @@ import java.util.List;
 public class Habitacion {
 
     @Id
-    private Long numero;
+    private Long numerohabitacion;
 
     @NotNull(message = "tipo de habitacion es obligatorio")
     private String tipoHabitacion;
