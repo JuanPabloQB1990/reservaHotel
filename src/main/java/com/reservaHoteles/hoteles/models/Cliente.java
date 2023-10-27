@@ -29,8 +29,8 @@ public class Cliente {
 
     private int edad;
 
-
     private String correoElectronico;
+
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Reservas> reservas = new ArrayList<>();

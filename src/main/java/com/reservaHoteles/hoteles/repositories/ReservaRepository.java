@@ -8,16 +8,21 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReservaRepository extends JpaRepository<Reservas, String> {
 
     @Transactional
     @Modifying
-    @Query(value = "insert into (id_reserva, fecha_reserva, cedula_cliente, total_a_pagar,numero_habitacion)value" +
-            "(:codigo, :fechaReserva, :cedulaCliente, :total_a_pagar, :numeroHabitacion)", nativeQuery = true)
-    void crearReserva(@Param("codigo") String codigo, @Param("fechaReserva") String fechaReserva, @Param("cedulaCliente") Long cedulaCliente,
-                      @Param("total_a_pagar") Double total_a_pagar, @Param("numeroHabitacion") Long numeroHabitacion);
+    @Query(value = "insert into reservas(cod_reserva, fecha_reserva, cedula_cliente, total, numero_habitacion)value(:codigo, :fechaReserva, :cedulaCliente, :total, :numeroHabitacion)", nativeQuery = true)
+    void crearReserva(@Param("codigo") String codigo, @Param("fechaReserva") LocalDateTime fechaReserva, @Param("cedulaCliente") Long cedulaCliente, @Param("total") Double total, @Param("numeroHabitacion") Long numeroHabitacion);
+
     @Query(value = "select * from reservas where numero_habitacion = :id and date(fecha_reserva) = :fecha", nativeQuery = true)
-    Reservas buscarReserva(@Param("id")Long id, @Param("fecha") String fecha);
+    Reservas buscarReserva(@Param("id")Long id, @Param("fecha") LocalDate fecha);
+
+    void deleteByCodReserva(String codReserva);
+
+    Reservas findByCodReserva(String codReserva);
 }

@@ -71,8 +71,8 @@ public class ClienteService {
         cliente.get().setDireccion(Objects.isNull(clienteAActualizar.getDireccion()) ?
                 cliente.get().getDireccion(): clienteAActualizar.getDireccion());
 
-        cliente.get().setCorreoElectronico(Objects.isNull(clienteAActualizar.getCorreoElectronico()) ?
-                cliente.get().getCorreoElectronico(): clienteAActualizar.getCorreoElectronico());
+        cliente.get().setCorreo(Objects.isNull(clienteAActualizar.getCorreo()) ?
+                cliente.get().getCorreo(): clienteAActualizar.getCorreo());
         clienteRepository.save(cliente.get());
 
         return clienteRepository.save(clienteAActualizar);
