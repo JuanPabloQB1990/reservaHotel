@@ -62,7 +62,7 @@ public class ReservaService {
                 reserva.getHabitacion().getNumerohabitacion());
 
 
-        Habitacion habitacionRelacionada = this.habitacionRepository.findByNumero(reserva.getHabitacion().getNumerohabitacion());
+        Habitacion habitacionRelacionada = this.habitacionRepository.findBynumerohabitacion(reserva.getHabitacion().getNumerohabitacion());
 
         return new ReservaConfirmation(
                 reserva.getCodReserva(),
