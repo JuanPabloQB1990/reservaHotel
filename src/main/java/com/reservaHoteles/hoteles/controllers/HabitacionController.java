@@ -17,7 +17,6 @@ public class HabitacionController {
     @ApiResponses(value={
             @ApiResponse( code = 201, message = "habitacion creada exitosamente")
     })
-    @ApiOperation(value="habitacion", notes= "this create a habitacion", response = habitacion.class)
     @PostMapping("/habitacion")
     @ResponseStatus(HttpStatus.CREATED)
     public Object register(@ApiParam(value = "habitacion object", required = true) @RequestBody habitacion habitacion){
