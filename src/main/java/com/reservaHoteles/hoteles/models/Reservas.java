@@ -18,31 +18,30 @@ import java.util.UUID;
 public class Reservas {
 
     @Id
-    @Column(name = "id_reserva")
+    @Column(name = "cod_reserva")
     private String codReserva = UUID.randomUUID().toString().toUpperCase();
 
     @NotNull(message = "la fecha es obligatoria")
     @Column(name = "fecha_reserva")
-    private String fechaReserva;
+    private LocalDateTime fechaReserva;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "cedulaCliente")
+    @JoinColumn(name = "cedula_cliente")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Cliente cliente;
 
-    @Column(name = "total_a_pagar")
-    private double totalAPagar = 0;
+    private double total = 0.0;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "numeroHabitacion")
+    @JoinColumn(name = "numero_habitacion")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Habitacion habitacion;
 
-    public Reservas(String codReserva, String fechaReserva, Cliente cliente, double totalAPagar, Habitacion habitacion) {
+    public Reservas(String codReserva, LocalDateTime fechaReserva, Cliente cliente, double total, Habitacion habitacion) {
         this.codReserva = codReserva;
-        this.fechaReserva = fechaReserva.format(String.valueOf(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss")));
+        this.fechaReserva = fechaReserva;
         this.cliente = cliente;
-        this.totalAPagar = totalAPagar;
+        this.total = total;
         this.habitacion = habitacion;
     }
 }
