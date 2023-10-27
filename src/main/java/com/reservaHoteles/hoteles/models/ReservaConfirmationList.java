@@ -16,6 +16,6 @@ public class ReservaConfirmationList {
 
     public double totalAPagar;
 
-    public Integer idHabitacion;
+    public Habitacion idHabitacion;
 
 }

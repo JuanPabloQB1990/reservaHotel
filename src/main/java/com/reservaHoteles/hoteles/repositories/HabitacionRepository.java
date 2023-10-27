@@ -1,8 +1,7 @@
 package com.reservaHoteles.hoteles.repositories;
 
-import com.reservaHoteles.hoteles.controllers.HabitacionController;
-import com.reservaHoteles.hoteles.models.habitacion;
-import org.springframework.data.repository.CrudRepository;
+import com.reservaHoteles.hoteles.models.Habitacion;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface HabitacionRepository extends CrudRepository<HabitacionController, Integer> {
+public interface HabitacionRepository extends JpaRepository<Habitacion, Long> {
 }
