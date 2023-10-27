@@ -30,7 +30,7 @@ public class Cliente {
     private int edad;
 
     @NotNull(message = "el correo del cliente es obligatorio")
-    private String correoElectronico;
+    private String correo;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Reservas> reservas = new ArrayList<>();
