@@ -1,79 +1,32 @@
 package com.reservaHoteles.hoteles.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.OneToMany;
-import org.hibernate.annotations.CascadeType;
-import org.springframework.data.annotation.Id;
 
-import java.io.Serializable;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.hibernate.annotations.CascadeType.*;
+@Data
+@Entity
+@Table(name = "habitacion")
+@AllArgsConstructor
+@NoArgsConstructor
+public class Habitacion {
 
-public class habitacion {
-
-    @ApiModelProperty(value = "Habitacion id", example ="1")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer numeroHabitacion;
+    private Long numerohabitacion;
 
-    @ApiModelProperty(value = "Tipo de habitacion", example ="basica")
-    @Column(name = "Tipo de habitacion")
+    @NotNull(message = "tipo de habitacion es obligatorio")
     private String tipoHabitacion;
 
-    @ApiModelProperty(value = "Precio de habitacion", example ="100")
-    @Column(name = "Precio")
-    private Double Precio;
+    @NotNull(message = "el precio de la habitacion es obligatorio")
+    private double precioBase;
 
-    @JsonIgnoreProperties("Habitacion")
-    /*
-    private List<reservas> reservations;
-     */
-    public habitacion(){}
+    @OneToMany(mappedBy = "habitacion", cascade = CascadeType.ALL)
+    private List<Reservas> reservas = new ArrayList<>();
 
-    public habitacion(Integer numberRoom, String roomType, Double price) {
-        this.numeroHabitacion = numeroHabitacion;
-        this.tipoHabitacion = tipoHabitacion;
-        this.Precio = Precio;
-    }
-    public Integer numeroHabitacion() {
-        return numeroHabitacion;
-    }
-
-    public void setnumeroHabitacion(Integer numeroHabitacion) {
-        this.numeroHabitacion = numeroHabitacion;
-    }
-
-    public String gettipoHabitacion() {
-        return tipoHabitacion;
-    }
-
-    public void setnumeroHabitacion(String setnumeroHabitacion) {
-        this.numeroHabitacion = Integer.valueOf(setnumeroHabitacion);
-    }
-
-    public Double getPrecio() {
-        return Precio;
-    }
-
-    public void setPrecio(Double Precio) {
-        this.Precio = Precio;
-    }
-
-
- /*
-    public List<reservas> getReservations() {
-        return Reservas;
-    }
-
-    public void setreservas(List<Reservas> reservas) {
-        this.Reservas = reservas;
-    }
-
- */
 }
