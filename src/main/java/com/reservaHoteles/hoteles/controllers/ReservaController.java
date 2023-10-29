@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping(path = "api/reservas")
 public class ReservaController {
@@ -30,7 +32,12 @@ public class ReservaController {
     }
 
     @DeleteMapping(path = "{codigo}")
-    public String cancelarReserva(@PathVariable String codReserva){
-        return this.reservaService.cancelarReserva(codReserva);
+    public String cancelarReserva(@PathVariable String codigo){
+        return this.reservaService.cancelarReserva(codigo);
+    }
+
+    @GetMapping
+    public ReservaConfirmation obtenerTotal(@RequestParam(name = "codigo") String codigo, @RequestParam(name = "fechaSalida") LocalDate fechaSalida){
+        return this.reservaService.obtenerTotal(codigo, fechaSalida);
     }
 }

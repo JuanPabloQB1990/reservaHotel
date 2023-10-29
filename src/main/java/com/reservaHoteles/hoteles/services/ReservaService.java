@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 @Service
 public class ReservaService {
@@ -54,14 +55,6 @@ public class ReservaService {
                     reserva.getHabitacion().getNumerohabitacion());
         }
 
-        this.reservaRepository.crearReserva(
-                reserva.getCodReserva(),
-                reserva.getFechaReserva(),
-                reserva.getCliente().getCedula(),
-                reserva.getTotal(),
-                reserva.getHabitacion().getNumerohabitacion());
-
-
         Habitacion habitacionRelacionada = this.habitacionRepository.findBynumerohabitacion(reserva.getHabitacion().getNumerohabitacion());
 
         return new ReservaConfirmation(
@@ -75,13 +68,43 @@ public class ReservaService {
 
     public Cliente obtenerReservasPorCliente(Long cedula) {
         return this.clienteRepository.findByCedula(cedula);
-
     }
 
     public String cancelarReserva(String codReserva) {
-
-        this.reservaRepository.deleteByCodReserva(codReserva);
+        this.reservaRepository.cancelarReserva(codReserva);
         return "reserva cancelada satisfactoriamente";
     }
 
+    public ReservaConfirmation obtenerTotal(String codigo, LocalDate fechaSalida) {
+
+        Reservas reservaEncontrada = this.reservaRepository.findByCodReserva(codigo);
+
+        Habitacion habitacionRelacionada = this.habitacionRepository.findBynumerohabitacion(reservaEncontrada.getHabitacion().getNumerohabitacion());
+
+        long cantDias = ChronoUnit.DAYS.between(reservaEncontrada.getFechaReserva().toLocalDate(), fechaSalida);
+
+        double totalAPagar = habitacionRelacionada.getPrecioBase() * cantDias;
+        reservaEncontrada.setTotal(totalAPagar);
+
+        if (cantDias > 15){
+            totalAPagar = habitacionRelacionada.getPrecioBase() - (habitacionRelacionada.getPrecioBase() * 20)/100;
+            reservaEncontrada.setTotal(totalAPagar);
+        }
+
+        if (habitacionRelacionada.getTipoHabitacion().equals("premium")){
+            totalAPagar = totalAPagar - (totalAPagar * 5)/100;
+            reservaEncontrada.setTotal(totalAPagar);
+        }
+
+        this.reservaRepository.pagarReserva(reservaEncontrada.getCodReserva(), reservaEncontrada.getTotal());
+
+        return new ReservaConfirmation(
+                reservaEncontrada.getCodReserva(),
+                reservaEncontrada.getFechaReserva(),
+                reservaEncontrada.getTotal(),
+                habitacionRelacionada.getNumerohabitacion(),
+                habitacionRelacionada.getTipoHabitacion(),
+                habitacionRelacionada.getPrecioBase());
+
+    }
 }

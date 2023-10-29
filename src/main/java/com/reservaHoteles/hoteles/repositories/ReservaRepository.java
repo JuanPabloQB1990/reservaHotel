@@ -22,7 +22,14 @@ public interface ReservaRepository extends JpaRepository<Reservas, String> {
     @Query(value = "select * from reservas where numero_habitacion = :id and date(fecha_reserva) = :fecha", nativeQuery = true)
     Reservas buscarReserva(@Param("id")Long id, @Param("fecha") LocalDate fecha);
 
-    void deleteByCodReserva(String codReserva);
+    @Transactional
+    @Modifying
+    @Query(value = "delete from reservas where cod_reserva = :codigo", nativeQuery = true)
+    void cancelarReserva(@Param("codigo") String codReserva);
 
+    @Transactional
+    @Modifying
+    @Query(value = "update reservas set total = :total where cod_reserva = :codigo", nativeQuery = true)
+    void pagarReserva(@Param("codigo") String codReserva, @Param("total") Double total);
     Reservas findByCodReserva(String codReserva);
 }
