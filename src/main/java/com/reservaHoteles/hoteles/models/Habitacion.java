@@ -27,6 +27,11 @@ public class Habitacion {
     private double precioBase;
 
     @OneToMany(mappedBy = "habitacion", cascade = CascadeType.ALL)
-    private List<Reservas> reservas = new ArrayList<>();
+    private List<Reserva> reservas = new ArrayList<>();
 
+    public Habitacion(Long numerohabitacion, String tipoHabitacion, double precioBase) {
+        this.numerohabitacion = numerohabitacion;
+        this.tipoHabitacion = tipoHabitacion;
+        this.precioBase = precioBase;
+    }
 }

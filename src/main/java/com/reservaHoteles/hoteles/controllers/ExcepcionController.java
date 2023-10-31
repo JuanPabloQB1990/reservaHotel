@@ -1,5 +1,6 @@
 package com.reservaHoteles.hoteles.controllers;
 
+import com.reservaHoteles.hoteles.excepciones.EntitiesNotFoundExcepcion;
 import com.reservaHoteles.hoteles.excepciones.HandlerResponseException;
 import com.reservaHoteles.hoteles.excepciones.ReservaFindException;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,9 @@ public class ExcepcionController {
         return errorMap;
     }
 
-    @ExceptionHandler(ReservaFindException.class)
-    public Map<String, String> reservaFindExcepcion(ReservaFindException rfe){
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(EntitiesNotFoundExcepcion.class)
+    public Map<String, String> entitiesNotFoundExcepcion(EntitiesNotFoundExcepcion rfe){
         errorMap = new HashMap<>();
         errorMap.put("errorMessage", rfe.getMessage());
         return errorMap;
@@ -41,4 +43,11 @@ public class ExcepcionController {
         return errorMap;
     }
 
+
+    @ExceptionHandler(NullPointerException.class)
+    public Map<String, String> clienteNotFoundExcepcion(NullPointerException npe){
+        errorMap = new HashMap<>();
+        errorMap.put("errorMessage", npe.getMessage());
+        return errorMap;
+    }
 }

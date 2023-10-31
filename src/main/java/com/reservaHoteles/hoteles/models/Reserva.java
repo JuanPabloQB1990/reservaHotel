@@ -2,20 +2,18 @@ package com.reservaHoteles.hoteles.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Entity
 @Data
 @Table(name = "reservas")
 @NoArgsConstructor
-public class Reservas {
+public class Reserva {
 
     @Id
     @Column(name = "cod_reserva")
@@ -37,11 +35,13 @@ public class Reservas {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Habitacion habitacion;
 
-    public Reservas(String codReserva, LocalDateTime fechaReserva, Cliente cliente, double total, Habitacion habitacion) {
+    public Reserva(String codReserva, LocalDateTime fechaReserva, Cliente cliente, double total, Habitacion habitacion) {
         this.codReserva = codReserva;
         this.fechaReserva = fechaReserva;
         this.cliente = cliente;
         this.total = total;
         this.habitacion = habitacion;
     }
+
+
 }

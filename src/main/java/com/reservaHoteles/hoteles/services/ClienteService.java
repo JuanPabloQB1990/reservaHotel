@@ -14,9 +14,10 @@ import java.util.Optional;
 @Service
 public class ClienteService {
 
-    @Autowired
+
     private ClienteRepository clienteRepository;
 
+    @Autowired
     public ClienteService(ClienteRepository clienteRepository){
         this.clienteRepository = clienteRepository;
     }
@@ -26,9 +27,9 @@ public class ClienteService {
 
         Cliente clienteOptional = this.clienteRepository.findByCedula(cliente.getCedula());
 
-            if (clienteOptional != null ) {
-                throw new HandlerResponseException(HttpStatus.INTERNAL_SERVER_ERROR,"el cliente ya esta registrado");
-            }
+        if (clienteOptional != null ) {
+            throw new HandlerResponseException(HttpStatus.INTERNAL_SERVER_ERROR,"el cliente ya esta registrado");
+        }
 
         Cliente clienteCreado = this.clienteRepository.save(cliente);
 

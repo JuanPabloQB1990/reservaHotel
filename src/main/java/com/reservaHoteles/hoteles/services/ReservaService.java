@@ -1,14 +1,16 @@
 package com.reservaHoteles.hoteles.services;
 
+import com.reservaHoteles.hoteles.excepciones.HandlerResponseException;
 import com.reservaHoteles.hoteles.excepciones.ReservaFindException;
 import com.reservaHoteles.hoteles.models.Cliente;
 import com.reservaHoteles.hoteles.models.Habitacion;
 import com.reservaHoteles.hoteles.models.ReservaConfirmation;
-import com.reservaHoteles.hoteles.models.Reservas;
+import com.reservaHoteles.hoteles.models.Reserva;
 import com.reservaHoteles.hoteles.repositories.ClienteRepository;
 import com.reservaHoteles.hoteles.repositories.HabitacionRepository;
 import com.reservaHoteles.hoteles.repositories.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -31,7 +33,7 @@ public class ReservaService {
         this.habitacionRepository = habitacionRepository;
     }
 
-    public ReservaConfirmation crearReserva(Reservas reserva) {
+    public ReservaConfirmation crearReserva(Reserva reserva) {
 
         Cliente clienteEncontrado = this.clienteRepository.findByCedula(reserva.getCliente().getCedula());
 
@@ -39,20 +41,17 @@ public class ReservaService {
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate fechaReserva = LocalDate.parse(fecha.format(myFormatObj));
 
-        Reservas reservaEncontrada = this.reservaRepository.buscarReserva(reserva.getHabitacion().getNumerohabitacion(),fechaReserva);
-
+        Reserva reservaEncontrada = this.reservaRepository.buscarReserva(reserva.getHabitacion().getNumerohabitacion(),fechaReserva);
 
         if (clienteEncontrado != null){
             if (reservaEncontrada != null){
-                throw new ReservaFindException("la habitacion ya se encuentra disponible para esta fecha");
+                throw new HandlerResponseException(HttpStatus.NOT_FOUND, "la habitacion no se encuentra disponible para esta fecha");
             }
+            this.reservaRepository.save(reserva);
 
-            this.reservaRepository.crearReserva(
-                    reserva.getCodReserva(),
-                    reserva.getFechaReserva(),
-                    reserva.getCliente().getCedula(),
-                    reserva.getTotal(),
-                    reserva.getHabitacion().getNumerohabitacion());
+        }else{
+            throw new HandlerResponseException(HttpStatus.NOT_FOUND, "el usuario no se encuentra registrado");
+
         }
 
         Habitacion habitacionRelacionada = this.habitacionRepository.findBynumerohabitacion(reserva.getHabitacion().getNumerohabitacion());
@@ -71,13 +70,17 @@ public class ReservaService {
     }
 
     public String cancelarReserva(String codReserva) {
-        this.reservaRepository.cancelarReserva(codReserva);
+        this.reservaRepository.deleteById(codReserva);
         return "reserva cancelada satisfactoriamente";
     }
 
     public ReservaConfirmation obtenerTotal(String codigo, LocalDate fechaSalida) {
 
-        Reservas reservaEncontrada = this.reservaRepository.findByCodReserva(codigo);
+        if (codigo == null && fechaSalida == null){
+            throw new NullPointerException();
+        }
+
+        Reserva reservaEncontrada = this.reservaRepository.findByCodReserva(codigo);
 
         Habitacion habitacionRelacionada = this.habitacionRepository.findBynumerohabitacion(reservaEncontrada.getHabitacion().getNumerohabitacion());
 
@@ -87,7 +90,7 @@ public class ReservaService {
         reservaEncontrada.setTotal(totalAPagar);
 
         if (cantDias > 15){
-            totalAPagar = habitacionRelacionada.getPrecioBase() - (habitacionRelacionada.getPrecioBase() * 20)/100;
+            totalAPagar = totalAPagar - (habitacionRelacionada.getPrecioBase() * 20)/100;
             reservaEncontrada.setTotal(totalAPagar);
         }
 
@@ -95,13 +98,12 @@ public class ReservaService {
             totalAPagar = totalAPagar - (totalAPagar * 5)/100;
             reservaEncontrada.setTotal(totalAPagar);
         }
-
-        this.reservaRepository.pagarReserva(reservaEncontrada.getCodReserva(), reservaEncontrada.getTotal());
+        Reserva reservaPagada = this.reservaRepository.save(reservaEncontrada);
 
         return new ReservaConfirmation(
-                reservaEncontrada.getCodReserva(),
-                reservaEncontrada.getFechaReserva(),
-                reservaEncontrada.getTotal(),
+                reservaPagada.getCodReserva(),
+                reservaPagada.getFechaReserva(),
+                reservaPagada.getTotal(),
                 habitacionRelacionada.getNumerohabitacion(),
                 habitacionRelacionada.getTipoHabitacion(),
                 habitacionRelacionada.getPrecioBase());

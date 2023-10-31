@@ -3,6 +3,7 @@ package com.reservaHoteles.hoteles.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "cliente")
+@NoArgsConstructor
 public class Cliente {
 
     @Id
@@ -33,5 +35,15 @@ public class Cliente {
 
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-    private List<Reservas> reservas = new ArrayList<>();
+    private List<Reserva> reservas = new ArrayList<>();
+
+    public Cliente(Long cedula, String nombre, String apellido, String ciudad, String direccion, int edad, String correoElectronico) {
+        this.cedula = cedula;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.ciudad = ciudad;
+        this.direccion = direccion;
+        this.edad = edad;
+        this.correoElectronico = correoElectronico;
+    }
 }

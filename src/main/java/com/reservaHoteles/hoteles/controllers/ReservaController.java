@@ -2,7 +2,7 @@ package com.reservaHoteles.hoteles.controllers;
 
 import com.reservaHoteles.hoteles.models.Cliente;
 import com.reservaHoteles.hoteles.models.ReservaConfirmation;
-import com.reservaHoteles.hoteles.models.Reservas;
+import com.reservaHoteles.hoteles.models.Reserva;
 import com.reservaHoteles.hoteles.services.ReservaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class ReservaController {
     }
 
     @PostMapping
-    public ReservaConfirmation crearReserva(@RequestBody @Valid Reservas reserva){
+    public ReservaConfirmation crearReserva(@RequestBody @Valid Reserva reserva){
         return this.reservaService.crearReserva(reserva);
     }
 

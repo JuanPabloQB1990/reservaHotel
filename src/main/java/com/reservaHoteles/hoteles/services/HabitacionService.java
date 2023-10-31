@@ -1,10 +1,12 @@
 package com.reservaHoteles.hoteles.services;
 
+import com.reservaHoteles.hoteles.excepciones.EntitiesNotFoundExcepcion;
 import com.reservaHoteles.hoteles.models.Habitacion;
 import com.reservaHoteles.hoteles.repositories.HabitacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -23,5 +25,20 @@ public class HabitacionService {
 
     public List<Habitacion> obtenerHabitaciones() {
         return this.habitacionRepository.findAll();
+    }
+
+    public List<Habitacion> obtenerHabitacionesDisponibles() {
+        List<Habitacion> habitacionesDisponibles = this.habitacionRepository.buscarHabitacionesDisponible();
+
+        if (habitacionesDisponibles.isEmpty()){
+            throw new EntitiesNotFoundExcepcion("no hay habitaciones disponibles");
+        }
+
+        return habitacionesDisponibles;
+
+    }
+
+    public List<Habitacion> obtenerHabitacionesPorFechaYTipo(LocalDate fechaRequerida, String tipoHabitacion) {
+        return null;
     }
 }
