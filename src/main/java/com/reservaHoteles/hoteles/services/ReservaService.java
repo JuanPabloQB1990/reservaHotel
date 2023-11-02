@@ -35,12 +35,15 @@ public class ReservaService {
 
     public ReservaConfirmation crearReserva(Reserva reserva) {
 
+        // buscar si el cliente existe
         Cliente clienteEncontrado = this.clienteRepository.findByCedula(reserva.getCliente().getCedula());
 
+        // formateando la fecha
         LocalDateTime fecha = reserva.getFechaReserva();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate fechaReserva = LocalDate.parse(fecha.format(myFormatObj));
 
+        // buscar la reserva existe
         Reserva reservaEncontrada = this.reservaRepository.buscarReserva(reserva.getHabitacion().getNumerohabitacion(),fechaReserva);
 
         if (clienteEncontrado != null){
@@ -50,7 +53,7 @@ public class ReservaService {
             this.reservaRepository.save(reserva);
 
         }else{
-            throw new HandlerResponseException(HttpStatus.NOT_FOUND, "el usuario no se encuentra registrado");
+            throw new HandlerResponseException(HttpStatus.NOT_FOUND, "el usuario no se encuentra registrado, debe registrarse");
 
         }
 
@@ -76,7 +79,7 @@ public class ReservaService {
 
     public ReservaConfirmation obtenerTotal(String codigo, LocalDate fechaSalida) {
 
-        if (codigo == null && fechaSalida == null){
+        if (codigo == null || fechaSalida == null){
             throw new NullPointerException();
         }
 

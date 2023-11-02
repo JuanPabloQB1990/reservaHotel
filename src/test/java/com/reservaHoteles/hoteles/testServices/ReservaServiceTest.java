@@ -26,13 +26,9 @@ import static org.mockito.Mockito.*;
 
 public class ReservaServiceTest {
 
-
     private ReservaService reservaService;
-
     private ReservaRepository reservaRepository;
-
     private ClienteRepository clienteRepository;
-
     private HabitacionRepository habitacionRepository;
 
     Habitacion habitacionTest;
@@ -56,10 +52,12 @@ public class ReservaServiceTest {
 
     }
 
+    // Jeison Rios
     @Test
     public void testCrearReservaClienteNulo(){
 
         when(this.clienteRepository.findByCedula(any())).thenReturn(null);
+
         Assertions.assertThrows(HandlerResponseException.class,
                 ()-> this.reservaService.crearReserva(reservaTest));
 
@@ -67,51 +65,61 @@ public class ReservaServiceTest {
 
     }
 
+    // Mafe
     @Test
     public void testCrearReservaConReservaExistente(){
-
+        //Arrange => configurar las condiciones previas y las entradas necesarias para la prueba.
         when(this.clienteRepository.findByCedula(any())).thenReturn(clienteTest);
         when(this.reservaRepository.buscarReserva(any(),any())).thenReturn(reservaTest);
 
+        //Act => Ejecutar el código que se está probando.
         HandlerResponseException rfe = Assertions.assertThrows(HandlerResponseException.class,
                 ()-> this.reservaService.crearReserva(reservaTest));
+
+        //Assert => verificar el comportamiento y los resultados esperados.
         verify(reservaRepository, never()).save(reservaTest);
 
     }
 
+    // Sofia
     @Test
     public void testCrearReservaSatisfactoriamente(){
-
+        //Arrange => configurar las condiciones previas y las entradas necesarias para la prueba.
         when(this.clienteRepository.findByCedula(any())).thenReturn(clienteTest);
         when(this.reservaRepository.buscarReserva(any(),any())).thenReturn(null);
         when(this.habitacionRepository.findBynumerohabitacion(any())).thenReturn(habitacionTest);
 
+        //Act => Ejecutar el código que se está probando.
         ReservaConfirmation reservaCreada = this.reservaService.crearReserva(reservaTest);
 
+        //Assert => verificar el comportamiento y los resultados esperados.
         assertThat(reservaCreada.codReserva).isEqualTo(reservaTest.getCodReserva());
         assertThat(reservaCreada.getNumeroHabitacion()).isEqualTo(habitacionTest.getNumerohabitacion());
-
         verify(reservaRepository, times(1)).save(reservaTest);
 
     }
 
+    // Juan Pablo
     @Test
     public void testObtenerTotalConFechaNula(){
-        //LocalDate fechaSalidaTest = LocalDate.of(2023,10,30);
-        LocalDate fechaSalidaTest = null;
-
+        //Arrange => configurar las condiciones previas y las entradas necesarias para la prueba.
+        LocalDate fechaSalidaTest = LocalDate.of(2023,10,30);
         String codigo = "dfsd44fff";
-        Assertions.assertThrows(NullPointerException.class,
-                () -> this.reservaService.obtenerTotal(codigo,fechaSalidaTest));
 
+        //Act => Ejecutar el código que se está probando.
+        Assertions.assertThrows(NullPointerException.class,
+                () -> this.reservaService.obtenerTotal(codigo, fechaSalidaTest));
+
+        //Assert => verificar el comportamiento y los resultados esperados.
         verify(reservaRepository, never()).save(any(Reserva.class));
     }
+
 
     @Test
     public void testObtenerTotalConCodigoNulo(){
         LocalDate fechaSalidaTest = LocalDate.of(2023,10,30);
 
-        String codigo = null;
+        String codigo = "sdfjss";
         Assertions.assertThrows(NullPointerException.class,
                 () -> this.reservaService.obtenerTotal(codigo,fechaSalidaTest));
 
@@ -129,8 +137,8 @@ public class ReservaServiceTest {
 
         assertThat(reservaRealizada.getTotalAPagar()).isEqualTo(9000);
 
-
     }
+
 
     @Test
     public void testPagarHabitacionStandartMayorA15Dias(){
@@ -155,7 +163,6 @@ public class ReservaServiceTest {
 
         assertThat(reservaRealizada.getTotalAPagar()).isEqualTo(17860);
 
-
     }
 
     @Test
@@ -168,7 +175,6 @@ public class ReservaServiceTest {
         ReservaConfirmation reservaRealizada = this.reservaService.obtenerTotal("1234", fechaSalidaTest);
 
         assertThat(reservaRealizada.getTotalAPagar()).isEqualTo(3800);
-
 
     }
 }
