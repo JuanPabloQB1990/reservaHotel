@@ -33,7 +33,6 @@ public class Cliente {
 
     private String correoElectronico;
 
-
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Reserva> reservas = new ArrayList<>();
 
